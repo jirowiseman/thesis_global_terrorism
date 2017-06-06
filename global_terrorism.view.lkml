@@ -4,11 +4,13 @@ view: global_terrorism {
   dimension: addnotes {
     type: string
     sql: ${TABLE}.addnotes ;;
+    hidden: yes
   }
 
   dimension: alternative {
     type: number
     sql: ${TABLE}.alternative ;;
+    hidden: yes
   }
 
   dimension: alternative_txt {
@@ -24,6 +26,7 @@ view: global_terrorism {
   dimension: attacktype1 {
     type: number
     sql: ${TABLE}.attacktype1 ;;
+    hidden: yes
   }
 
   dimension: attacktype1_txt {
@@ -34,6 +37,7 @@ view: global_terrorism {
   dimension: attacktype2 {
     type: number
     sql: ${TABLE}.attacktype2 ;;
+    hidden: yes
   }
 
   dimension: attacktype2_txt {
@@ -44,6 +48,7 @@ view: global_terrorism {
   dimension: attacktype3 {
     type: number
     sql: ${TABLE}.attacktype3 ;;
+    hidden: yes
   }
 
   dimension: attacktype3_txt {
@@ -79,6 +84,7 @@ view: global_terrorism {
   dimension: claimmode2 {
     type: number
     sql: ${TABLE}.claimmode2 ;;
+    hidden: yes
   }
 
   dimension: claimmode2_txt {
@@ -89,6 +95,7 @@ view: global_terrorism {
   dimension: claimmode3 {
     type: number
     sql: ${TABLE}.claimmode3 ;;
+    hidden: yes
   }
 
   dimension: claimmode3_txt {
@@ -102,8 +109,19 @@ view: global_terrorism {
   }
 
   dimension: compclaim {
-    type: number
-    sql: ${TABLE}.compclaim ;;
+    label: "Claimed by Multiple"
+    description: "Yes = multiple groups claimed responsibility. No = no competing claims. Unknown for all others"
+    case: {
+      when: {
+        sql: ${TABLE}.compclaim = 1;;
+        label: "Yes"
+      }
+      when: {
+        sql: ${TABLE}.compclaim = 0;;
+        label: "No"
+      }
+      else: "Unknown"
+    }
   }
 
   dimension: corp1 {
