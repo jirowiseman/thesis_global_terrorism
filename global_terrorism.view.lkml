@@ -228,13 +228,25 @@ view: global_terrorism {
   }
 
   dimension: iday {
-    type: number
-    sql: ${TABLE}.iday ;;
+    type: string
+    sql: STRING(${TABLE}.iday) ;;
   }
 
   dimension: imonth {
-    type: number
-    sql: ${TABLE}.imonth ;;
+    type: string
+    sql: STRING(${TABLE}.imonth) ;;
+  }
+
+  dimension: iyear {
+    type: string
+    sql: STRING(${TABLE}.iyear) ;;
+  }
+
+  dimension_group: Event_Date {
+    type: time
+    datatype: date
+    sql: CAST(CONCAT(${iyear},"-",${imonth},"-",${iday}) as DATE);;
+    timeframes: [date,day_of_week,day_of_week_index,week,month,year]
   }
 
   dimension: ingroup {
@@ -279,11 +291,6 @@ view: global_terrorism {
     sql: ${TABLE}.ishostkid ;;
   }
 
-  dimension: iyear {
-    type: number
-    sql: ${TABLE}.iyear ;;
-  }
-
   dimension: kidhijcountry {
     type: string
     sql: ${TABLE}.kidhijcountry ;;
@@ -292,11 +299,15 @@ view: global_terrorism {
   dimension: latitude {
     type: number
     sql: ${TABLE}.latitude ;;
+    hidden: yes
+
   }
 
   dimension: location {
     type: string
     sql: ${TABLE}.location ;;
+    hidden: yes
+
   }
 
   dimension: longitude {
@@ -448,11 +459,14 @@ view: global_terrorism {
   dimension: ransomamt {
     type: number
     sql: ${TABLE}.ransomamt ;;
+    value_format_name: usd
   }
 
   dimension: ransomamtus {
     type: number
     sql: ${TABLE}.ransomamtus ;;
+    hidden: yes
+
   }
 
   dimension: ransomnote {
@@ -464,16 +478,20 @@ view: global_terrorism {
     type: number
     value_format_name: id
     sql: ${TABLE}.ransompaid ;;
+    value_format_name: usd
   }
 
   dimension: ransompaidus {
     type: number
     sql: ${TABLE}.ransompaidus ;;
-  }
+    hidden: yes
+    }
 
   dimension: region {
     type: number
     sql: ${TABLE}.region ;;
+    hidden: yes
+
   }
 
   dimension: region_txt {
@@ -514,6 +532,12 @@ view: global_terrorism {
   dimension: success {
     type: number
     sql: ${TABLE}.success ;;
+    hidden: yes
+  }
+
+  dimension: successful_attack {
+    type: yesno
+    sql: ${success} = 1 ;;
   }
 
   dimension: suicide {
@@ -544,6 +568,8 @@ view: global_terrorism {
   dimension: targsubtype1 {
     type: number
     sql: ${TABLE}.targsubtype1 ;;
+    hidden: yes
+
   }
 
   dimension: targsubtype1_txt {
@@ -554,6 +580,8 @@ view: global_terrorism {
   dimension: targsubtype2 {
     type: number
     sql: ${TABLE}.targsubtype2 ;;
+    hidden: yes
+
   }
 
   dimension: targsubtype2_txt {
@@ -564,6 +592,8 @@ view: global_terrorism {
   dimension: targsubtype3 {
     type: number
     sql: ${TABLE}.targsubtype3 ;;
+    hidden: yes
+
   }
 
   dimension: targsubtype3_txt {
@@ -574,6 +604,8 @@ view: global_terrorism {
   dimension: targtype1 {
     type: number
     sql: ${TABLE}.targtype1 ;;
+    hidden: yes
+
   }
 
   dimension: targtype1_txt {
@@ -584,6 +616,8 @@ view: global_terrorism {
   dimension: targtype2 {
     type: number
     sql: ${TABLE}.targtype2 ;;
+    hidden: yes
+
   }
 
   dimension: targtype2_txt {
@@ -594,6 +628,8 @@ view: global_terrorism {
   dimension: targtype3 {
     type: number
     sql: ${TABLE}.targtype3 ;;
+    hidden: yes
+
   }
 
   dimension: targtype3_txt {
@@ -614,6 +650,8 @@ view: global_terrorism {
   dimension: weapsubtype1 {
     type: number
     sql: ${TABLE}.weapsubtype1 ;;
+    hidden: yes
+
   }
 
   dimension: weapsubtype1_txt {
@@ -624,6 +662,8 @@ view: global_terrorism {
   dimension: weapsubtype2 {
     type: number
     sql: ${TABLE}.weapsubtype2 ;;
+    hidden: yes
+
   }
 
   dimension: weapsubtype2_txt {
@@ -634,6 +674,8 @@ view: global_terrorism {
   dimension: weapsubtype3 {
     type: number
     sql: ${TABLE}.weapsubtype3 ;;
+    hidden: yes
+
   }
 
   dimension: weapsubtype3_txt {
@@ -644,6 +686,8 @@ view: global_terrorism {
   dimension: weapsubtype4 {
     type: number
     sql: ${TABLE}.weapsubtype4 ;;
+    hidden: yes
+
   }
 
   dimension: weapsubtype4_txt {
@@ -654,9 +698,11 @@ view: global_terrorism {
   dimension: weaptype1 {
     type: number
     sql: ${TABLE}.weaptype1 ;;
+    hidden: yes
   }
 
   dimension: weaptype1_txt {
+    label: "Attack Type"
     type: string
     sql: ${TABLE}.weaptype1_txt ;;
   }
@@ -691,9 +737,24 @@ view: global_terrorism {
     sql: ${TABLE}.weaptype4_txt ;;
   }
 
-  measure: count {
+  measure: incident_count {
     type: count
     approximate_threshold: 100000
-    drill_fields: [gname, gsubname]
+    drill_fields: [gname, city, country_txt,weaptype1_txt,nkill, nwound,nhostkid,summary]
+  }
+
+  measure: total_victim_deaths {
+    type: sum
+    sql: ${TABLE}.nkill ;;
+  }
+
+  measure: total_us_deaths {
+    type: sum
+    sql: ${TABLE}.nkillus ;;
+  }
+
+  measure: total_perpetrator_deaths {
+    type: sum
+    sql: ${TABLE}.nkillter ;;
   }
 }
