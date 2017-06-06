@@ -30,6 +30,7 @@ view: global_terrorism {
   }
 
   dimension: attacktype1_txt {
+    label: "Attack Type1"
     type: string
     sql: ${TABLE}.attacktype1_txt ;;
   }
@@ -41,6 +42,7 @@ view: global_terrorism {
   }
 
   dimension: attacktype2_txt {
+    label: "Attack Type2"
     type: string
     sql: ${TABLE}.attacktype2_txt ;;
   }
@@ -52,6 +54,7 @@ view: global_terrorism {
   }
 
   dimension: attacktype3_txt {
+    label: "Attack Type3"
     type: string
     sql: ${TABLE}.attacktype3_txt ;;
   }
@@ -723,7 +726,7 @@ view: global_terrorism {
   }
 
   dimension: weaptype1_txt {
-    label: "Attack Type"
+    label: "Weapon Type"
     type: string
     sql: ${TABLE}.weaptype1_txt ;;
   }
