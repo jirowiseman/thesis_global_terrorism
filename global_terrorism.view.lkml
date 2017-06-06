@@ -260,11 +260,11 @@ view: global_terrorism {
     sql: STRING(${TABLE}.iyear) ;;
   }
 
-  dimension_group: Event_Date {
+  dimension_group: incident {
     type: time
-    datatype: date
-    sql: CAST(CONCAT(${iyear},"-",${imonth},"-",${iday}) as DATE);;
-    timeframes: [date,day_of_week,day_of_week_index,week,month,year]
+    datatype: timestamp
+    sql: CAST(CONCAT(${iyear},"-",${imonth},"-",${iday}) as TIMESTAMP);;
+    timeframes: [raw,hour,date,day_of_week,day_of_week_index,week,month,year]
   }
 
   dimension: ingroup {
@@ -395,16 +395,19 @@ view: global_terrorism {
   }
 
   dimension: nkill {
+    label: "Casualties"
     type: number
     sql: ${TABLE}.nkill ;;
   }
 
   dimension: nkillter {
+    label: "Terrorist Casualties"
     type: number
     sql: ${TABLE}.nkillter ;;
   }
 
   dimension: nkillus {
+    label: "US Casualties"
     type: number
     sql: ${TABLE}.nkillus ;;
   }
