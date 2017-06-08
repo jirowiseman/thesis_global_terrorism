@@ -761,25 +761,25 @@ view: global_terrorism {
   measure: incident_count {
     type: count
     approximate_threshold: 100000
-    value_format: "0"
+    value_format: "#,##0"
     drill_fields: [gname, city, country_txt,weaptype1_txt,nkill, nwound,nhostkid,summary]
   }
 
   measure: total_victim_deaths {
     type: sum
     sql: ${TABLE}.nkill ;;
-    value_format: "0"
+    value_format: "#,##0"
   }
 
   measure: total_us_deaths {
     type: sum
     sql: ${TABLE}.nkillus ;;
-    value_format: "0"
+    value_format: "#,##0"
   }
 
   measure: total_perpetrator_deaths {
     type: sum
     sql: ${TABLE}.nkillter ;;
-    value_format: "0"
+    value_format: "#,##0"
   }
 }
