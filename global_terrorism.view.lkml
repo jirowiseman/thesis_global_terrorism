@@ -397,7 +397,15 @@ view: global_terrorism {
   dimension: nkill {
     label: "Casualties"
     type: number
-    sql: ${TABLE}.nkill ;;
+#     sql: ${TABLE}.nkill ;;
+    sql: IFNULL(INTEGER(${TABLE}.nkill),0) ;;
+  }
+
+  dimension: casualties_tiered {
+    type: tier
+    style: integer
+    tiers: [0,1,5,10,25,50,100]
+    sql: ${nkill} ;;
   }
 
   dimension: nkillter {
