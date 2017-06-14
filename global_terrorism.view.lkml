@@ -790,4 +790,10 @@ view: global_terrorism {
     sql: ${TABLE}.nkillter ;;
     value_format: "#,##0"
   }
+
+  measure: avg_casualty_count {
+    type: average
+    sql: ${TABLE}.nkill;;
+    value_format: "#,##0"
+  }
 }
