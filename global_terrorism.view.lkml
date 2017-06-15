@@ -145,8 +145,9 @@ view: global_terrorism {
   }
 
   dimension: country_txt {
+    map_layer_name: countries
     type: string
-    sql: ${TABLE}.country_txt ;;
+    sql: CASE WHEN country_txt = 'United States' THEN 'United States of America' ELSE country_txt END;;
   }
 
   dimension: crit1 {
