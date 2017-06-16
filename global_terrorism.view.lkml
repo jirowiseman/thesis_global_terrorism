@@ -1,6 +1,13 @@
 view: global_terrorism {
   sql_table_name: Thesis.global_terrorism ;;
 
+  dimension: eventid {
+    type: number
+    value_format_name: id
+    sql: ${TABLE}.eventid ;;
+    primary_key: yes
+  }
+
   dimension: addnotes {
     type: string
     sql: ${TABLE}.addnotes ;;
@@ -16,11 +23,13 @@ view: global_terrorism {
   dimension: alternative_txt {
     type: string
     sql: ${TABLE}.alternative_txt ;;
+    hidden: yes
   }
 
   dimension: approxdate {
     type: string
     sql: ${TABLE}.approxdate ;;
+    hidden: yes
   }
 
   dimension: attacktype1 {
@@ -30,6 +39,7 @@ view: global_terrorism {
   }
 
   dimension: attacktype1_txt {
+    label: "Attack Type"
     type: string
     sql: ${TABLE}.attacktype1_txt ;;
   }
@@ -43,6 +53,7 @@ view: global_terrorism {
   dimension: attacktype2_txt {
     type: string
     sql: ${TABLE}.attacktype2_txt ;;
+    hidden: yes
   }
 
   dimension: attacktype3 {
@@ -54,6 +65,7 @@ view: global_terrorism {
   dimension: attacktype3_txt {
     type: string
     sql: ${TABLE}.attacktype3_txt ;;
+    hidden: yes
   }
 
   dimension: city {
@@ -64,21 +76,27 @@ view: global_terrorism {
   dimension: claim2 {
     type: number
     sql: ${TABLE}.claim2 ;;
+    hidden: yes
   }
 
   dimension: claim3 {
     type: number
     sql: ${TABLE}.claim3 ;;
+    hidden: yes
   }
 
   dimension: claimed {
-    type: number
-    sql: ${TABLE}.claimed ;;
+    type: string
+    sql: CASE WHEN ${TABLE}.claimed IS NULl
+              OR ${TABLE}.claimed = -9 THEN 'Unknown'
+              WHEN ${TABLE}.claimed = 0 THEN 'Not Claimed'
+              ELSE 'Claimed' END ;;
   }
 
   dimension: claimmode {
     type: number
     sql: ${TABLE}.claimmode ;;
+    hidden: yes
   }
 
   dimension: claimmode2 {
@@ -90,6 +108,7 @@ view: global_terrorism {
   dimension: claimmode2_txt {
     type: string
     sql: ${TABLE}.claimmode2_txt ;;
+    hidden: yes
   }
 
   dimension: claimmode3 {
@@ -101,11 +120,16 @@ view: global_terrorism {
   dimension: claimmode3_txt {
     type: string
     sql: ${TABLE}.claimmode3_txt ;;
+    hidden: yes
   }
 
   dimension: claimmode_txt {
+    label: "Claim Mode"
     type: string
-    sql: ${TABLE}.claimmode_txt ;;
+    sql: CASE WHEN ${TABLE}.claimmode_txt = '.'
+              OR ${TABLE}.claimmode_txt = '0'
+              THEN 'No Claim'
+              ELSE ${TABLE}.claimmode_txt END;;
   }
 
   dimension: compclaim {
@@ -123,118 +147,128 @@ view: global_terrorism {
       else: "Unknown"
     }
   }
-
-  dimension: corp1 {
-    type: string
-    sql: ${TABLE}.corp1 ;;
-  }
-
-  dimension: corp2 {
-    type: string
-    sql: ${TABLE}.corp2 ;;
-  }
-
-  dimension: corp3 {
-    type: string
-    sql: ${TABLE}.corp3 ;;
-  }
-
-  dimension: country {
-    type: number
-    sql: ${TABLE}.country ;;
-  }
+# UNUSED FIELDS relatd to reporting source?
+#   dimension: corp1 {
+#     type: string
+#     sql: ${TABLE}.corp1 ;;
+#   }
+#
+#   dimension: corp2 {
+#     type: string
+#     sql: ${TABLE}.corp2 ;;
+#   }
+#
+#   dimension: corp3 {
+#     type: string
+#     sql: ${TABLE}.corp3 ;;
+#   }
+#
+#   dimension: country {
+#     type: number
+#     sql: ${TABLE}.country ;;
+#   }
 
   dimension: country_txt {
+    label: "Country"
     map_layer_name: countries
     type: string
-    sql: CASE WHEN country_txt = 'United States' THEN 'United States of America' ELSE country_txt END;;
+    sql: CASE WHEN ${TABLE}.country_txt = 'United States' THEN 'United States of America' ELSE ${TABLE}.country_txt END;;
   }
 
   dimension: crit1 {
-    type: number
-    sql: ${TABLE}.crit1 ;;
+    label: "Intent Social"
+    description: "The violent act must be aimed at attaining a political, economic, religious, or social goal. This criterion is not satisfied in those cases where the perpetrator(s) acted out of a pure profit motive or from an idiosyncratic personal motive unconnected with broader societal change"
+    type: string
+    sql: CASE WHEN ${TABLE}.crit1 = 1 THEN 'Yes'
+              ELSE 'No';;
   }
 
   dimension: crit2 {
-    type: number
-    sql: ${TABLE}.crit2 ;;
+    label: "Intent Influencial"
+    description: "To satisfy this criterion there must be evidence of an intention to coerce, intimidate, or convey some other message to a larger audience (or audiences) than the immediate victims. Such evidence can include (but is not limited to) the following: pre‐ or post‐attack statements by the perpetrator(s), past behavior by the perpetrators, or the particular nature of the target/victim, weapon, or attack type."
+    type: string
+    sql: CASE WHEN ${TABLE}.crit2 = 1 THEN 'Yes'
+              ELSE 'No';;
   }
 
   dimension: crit3 {
-    type: number
-    sql: ${TABLE}.crit3 ;;
-  }
-
-  dimension: dbsource {
+    label: "Intent Unlawful"
+    description: "The action is outside the context of legitimate warfare activities, insofar as it targets non‐combatants (i.e. the act must be outside the parameters permitted by international humanitarian law as reflected in the Additional Protocol to the Geneva Conventions of 12 August 1949 and elsewhere)."
     type: string
-    sql: ${TABLE}.dbsource ;;
+    sql: CASE WHEN ${TABLE}.crit3 = 1 THEN 'Yes'
+              ELSE 'No';;
   }
 
-  dimension: divert {
-    type: string
-    sql: ${TABLE}.divert ;;
-  }
+#  May use for a bibliography later
+#dimension: dbsource {
+#     type: string
+#     sql: ${TABLE}.dbsource ;;
+#   }
 
-  dimension: doubtterr {
-    type: number
-    sql: ${TABLE}.doubtterr ;;
-  }
+#   dimension: divert {
+#     type: string
+#     sql: ${TABLE}.divert ;;
+#   }
 
-  dimension: eventid {
-    type: number
-    value_format_name: id
-    sql: ${TABLE}.eventid ;;
-  }
+#  Not useful presently but could be used for "gray area" analysis
+#   dimension: doubtterr {
+#     type: number
+#     sql: ${TABLE}.doubtterr ;;
+#   }
 
-  dimension: extended {
-    type: number
-    sql: ${TABLE}.extended ;;
-  }
+#   dimension: extended {
+#     type: number
+#     sql: ${TABLE}.extended ;;
+#   }
 
   dimension: gname {
+    label: "Terrorist Group"
     type: string
     sql: ${TABLE}.gname ;;
   }
 
-  dimension: gname2 {
-    type: string
-    sql: ${TABLE}.gname2 ;;
-  }
+#   dimension: gname2 {
+#     type: string
+#     sql: ${TABLE}.gname2 ;;
+#   }s
+#
+#   dimension: gname3 {
+#     type: string
+#     sql: ${TABLE}.gname3 ;;
+#   }
 
-  dimension: gname3 {
-    type: string
-    sql: ${TABLE}.gname3 ;;
-  }
-
-  dimension: gsubname {
-    type: string
-    sql: ${TABLE}.gsubname ;;
-  }
-
-  dimension: gsubname2 {
-    type: string
-    sql: ${TABLE}.gsubname2 ;;
-  }
-
-  dimension: gsubname3 {
-    type: string
-    sql: ${TABLE}.gsubname3 ;;
-  }
+#   dimension: gsubname {
+#     type: string
+#     sql: ${TABLE}.gsubname ;;
+#   }
+#
+#   dimension: gsubname2 {
+#     type: string
+#     sql: ${TABLE}.gsubname2 ;;
+#   }
+#
+#   dimension: gsubname3 {
+#     type: string
+#     sql: ${TABLE}.gsubname3 ;;
+#   }
 
   dimension: guncertain1 {
-    type: number
-    sql: ${TABLE}.guncertain1 ;;
+    label: "Group Uncertain"
+    description: "This variable indicates whether or not the information reported by sources about the Perpetrator Group Name(s) is based on speculation or dubious claims of responsibility."
+    type: string
+    sql: CASE WHEN ${TABLE}.guncertain1 = 1 THEN 'Yes'
+              ELSE 'No';;
   }
 
-  dimension: guncertain2 {
-    type: number
-    sql: ${TABLE}.guncertain2 ;;
-  }
-
-  dimension: guncertain3 {
-    type: number
-    sql: ${TABLE}.guncertain3 ;;
-  }
+#   dimension: guncertain2 {
+#     type: number
+#     sql: ${TABLE}.guncertain2 ;;
+#   }
+#
+#   dimension: guncertain3 {
+#     type: number
+#     sql: ${TABLE}.guncertain3 ;;
+#   }
 
   dimension: hostkidoutcome {
     type: number
@@ -732,69 +766,77 @@ view: global_terrorism {
   }
 
   dimension: weaptype1_txt {
-    label: "Attack Type"
+    label: "Weapon Type"
     type: string
     sql: ${TABLE}.weaptype1_txt ;;
   }
 
-  dimension: weaptype2 {
-    type: number
-    sql: ${TABLE}.weaptype2 ;;
-  }
-
-  dimension: weaptype2_txt {
-    type: string
-    sql: ${TABLE}.weaptype2_txt ;;
-  }
-
-  dimension: weaptype3 {
-    type: number
-    sql: ${TABLE}.weaptype3 ;;
-  }
-
-  dimension: weaptype3_txt {
-    type: string
-    sql: ${TABLE}.weaptype3_txt ;;
-  }
-
-  dimension: weaptype4 {
-    type: number
-    sql: ${TABLE}.weaptype4 ;;
-  }
-
-  dimension: weaptype4_txt {
-    type: string
-    sql: ${TABLE}.weaptype4_txt ;;
-  }
+#   dimension: weaptype2 {
+#     type: number
+#     sql: ${TABLE}.weaptype2 ;;
+#   }
+#
+#   dimension: weaptype2_txt {
+#     type: string
+#     sql: ${TABLE}.weaptype2_txt ;;
+#   }
+#
+#   dimension: weaptype3 {
+#     type: number
+#     sql: ${TABLE}.weaptype3 ;;
+#   }
+#
+#   dimension: weaptype3_txt {
+#     type: string
+#     sql: ${TABLE}.weaptype3_txt ;;
+#   }
+#
+#   dimension: weaptype4 {
+#     type: number
+#     sql: ${TABLE}.weaptype4 ;;
+#   }
+#
+#   dimension: weaptype4_txt {
+#     type: string
+#     sql: ${TABLE}.weaptype4_txt ;;
+#   }
 
   measure: incident_count {
     type: count
     approximate_threshold: 100000
     value_format: "#,##0"
-    drill_fields: [gname, city, country_txt,weaptype1_txt,nkill, nwound,nhostkid,summary]
+    drill_fields:[Details*]
   }
 
   measure: total_victim_deaths {
     type: sum
     sql: ${TABLE}.nkill ;;
     value_format: "#,##0"
+    drill_fields:[Details*]
   }
 
   measure: total_us_deaths {
     type: sum
     sql: ${TABLE}.nkillus ;;
     value_format: "#,##0"
+    drill_fields:[Details*]
   }
 
   measure: total_perpetrator_deaths {
     type: sum
     sql: ${TABLE}.nkillter ;;
     value_format: "#,##0"
+    drill_fields:[Details*]
   }
 
   measure: avg_casualty_count {
     type: average
     sql: ${TABLE}.nkill;;
     value_format: "#,##0"
+    drill_fields:[Details*]
+  }
+
+  set: Details {
+    fields:[gname, city, country_txt, attacktype1, weaptype1_txt,nkill, nwound,nhostkid,motive,summary]
   }
 }
