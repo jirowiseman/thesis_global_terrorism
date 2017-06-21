@@ -247,6 +247,18 @@ view: global_terrorism {
     hidden: yes
   }
 
+  measure: min_date {
+    group_label: "Incident Date"
+    type: date
+    sql: MIN(${incident_date}) ;;
+  }
+
+  measure: max_date {
+    group_label: "Incident Date"
+    type: date
+    sql: MAX(${incident_date}) ;;
+  }
+
 #Not readily useful -- shows if attack was in immediate vicinity of the city named
 #   dimension: vicinity {
 #     type: number
@@ -734,7 +746,13 @@ view: global_terrorism {
     group_label: "Casualty Characteristics"
     type: average
     sql: ${TABLE}.nkill;;
-    value_format: "#,##0"
+    drill_fields:[Details*]
+  }
+
+  measure: median_casualty_count {
+    group_label: "Casualty Characteristics"
+    type: median
+    sql: ${TABLE}.nkill;;
     drill_fields:[Details*]
   }
 
@@ -927,6 +945,7 @@ view: global_terrorism {
   }
 
   dimension: automatic_used {
+    group_label: "Weapons"
     type: yesno
     sql: ${weapdetail} LIKE '% automatic%' ;;
 
