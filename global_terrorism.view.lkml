@@ -635,8 +635,6 @@ view: global_terrorism {
 #    group_label: "Kidnapping Info"
 #   type: string
 #   sql: ${TABLE}.hostkidoutcome_txt ;;
-#   }
-
 
 # String of approximate location, not useful for data analysis
 #   dimension: location {
@@ -739,6 +737,11 @@ view: global_terrorism {
     value_format: "#,##0"
     drill_fields:[Details*]
   }
+
+#   measure: alltime_global_casualties {
+#     type: number
+#     sql: (SELECT SUM(${TABLE}.nkill) FROM global_terrorism)  ;;
+#   }
 
 
 #not critical fields to explore
@@ -921,6 +924,12 @@ view: global_terrorism {
     type: number
     sql: ${TABLE}.weapsubtype1 ;;
     hidden: yes
+  }
+
+  dimension: automatic_used {
+    type: yesno
+    sql: ${weapdetail} LIKE '% automatic%' ;;
+
   }
 
 # These fields aren't particularly helpful to basic analysis

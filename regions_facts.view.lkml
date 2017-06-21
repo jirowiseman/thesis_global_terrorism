@@ -3,8 +3,10 @@ view: regions_facts {
     sql: SELECT
         region as region_id
         ,region_txt as region
-        , INTEGER(COUNT(nkill)) as total_fatalities
-        , MAX(nkill) as largest_attack
+        , INTEGER(COUNT(global_terrorism.nkill)) as alltime_fatalities
+        , MAX(global_terrorism.nkill) as largest_attack
+        , MIN(CAST(CONCAT(global_terrorism.iyear},"-",global_terrorism.imonth,"-",global_terrorism.iday) as TIMESTAMP) as first_attack
+        , MAX(CAST(CONCAT(global_terrorism.iyear},"-",global_terrorism.imonth,"-",global_terrorism.iday) as TIMESTAMP) as latest_attack
       FROM global_terrorism
       GROUP BY 1,2
       ;;
@@ -24,11 +26,12 @@ view: regions_facts {
   }
 
   dimension: total_fatalities {
+    label: "total casualties"
     type: number
     sql: ${TABLE}.total_fatalities ;;
   }
 
-  dimension: fatalities_tiered {
+  dimension: casualty_count_tiered {
     type: tier
     style: integer
     tiers: [0,5,10,50,100]
@@ -40,6 +43,10 @@ view: regions_facts {
     type: number
     sql: ${TABLE}.largest_attack ;;
     value_format: "#,##0"
+  }
+
+  dimension: first_attack {
+    type: date
   }
 
   measure: count {

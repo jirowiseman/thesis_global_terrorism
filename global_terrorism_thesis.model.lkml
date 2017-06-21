@@ -14,9 +14,4 @@ explore: global_terrorism{
     sql_on: ${global_terrorism.region} = ${regions_facts.region_id} ;;
     relationship: one_to_one
   }
-
-  join: casualties_facts {
-    sql_on: ${global_terrorism.eventid} = ${casualties_facts.event_id} ;;
-    relationship: one_to_one
-  }
 }
