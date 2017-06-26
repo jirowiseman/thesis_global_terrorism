@@ -19,7 +19,7 @@ view: weapons_year2 {
   }
 
   dimension: year {
-    type: date_year
+    type: number
     sql: ${TABLE}.year ;;
   }
 

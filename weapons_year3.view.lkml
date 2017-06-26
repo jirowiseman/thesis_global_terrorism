@@ -11,4 +11,28 @@ view: weapons_year3 {
   persist_for: "500 hours"
 
   }
+
+  dimension: weapon_id{
+    type: number
+    sql: ${TABLE}.weapon_id ;;
+    hidden: yes
+  }
+
+  dimension: year {
+    type: number
+    sql: ${TABLE}.year ;;
+    hidden: yes
+  }
+
+  dimension: total_casualties_caused {
+    type: number
+    sql: ${TABLE}.total_casualties_caused ;;
+    hidden: yes
+  }
+
+  dimension: overall_casualties {
+    type: number
+    sql: ${TABLE}.overall_casualties ;;
+    hidden: yes
+  }
 }
