@@ -1,4 +1,5 @@
 view: regions_facts {
+  view_label: "Global Terrorism"
   derived_table: {
     sql: SELECT
         region as region_id
@@ -17,39 +18,30 @@ view: regions_facts {
     description: "Unique ID for each event"
     type: number
     primary_key: yes
+    hidden: yes
     sql: ${TABLE}.region_id ;;
   }
 
-  dimension: region {
-    type: string
-    sql: ${TABLE}.region ;;
-  }
-
   dimension: total_fatalities {
-    label: "total casualties"
+    label: "Region - Total Casualties"
+    group_label: "Location"
     type: number
     sql: ${TABLE}.total_fatalities ;;
   }
 
-  dimension: casualty_count_tiered {
-    type: tier
-    style: integer
-    tiers: [0,5,10,50,100]
-    sql:${total_fatalities} ;;
-  }
-
-  dimension: largest_attack {
+  dimension: region_largest_attack {
     description: "Number of fatalities in largest attack for region specified"
+    label: "Region - Largest Attack"
+    group_label: "Location"
     type: number
     sql: ${TABLE}.largest_attack ;;
     value_format: "#,##0"
   }
 
-  dimension: first_attack {
-    type: date
-  }
-
-  measure: count {
+  measure: region_alltime_attacks_count {
+    label: "Region - Alltime Attacks"
+    description: "Total attacks recorded in region"
+    group_label: "Location"
     type: count
     value_format: "#,##0"
   }

@@ -385,6 +385,11 @@ view: global_terrorism {
   dimension: region_txt {
     label: "Region"
     group_label: "Location"
+#     link: {
+#       label: "Explore by name and filters"
+#        url: "https://dcl.dev.looker.com/explore/global_terrorism_thesis/global_terrorism?fields=global_terrorism.min_date,global_terrorism.max_date,global_terrorism.region_txt,global_terrorism.incident_count&f[global_terrorism.region_txt]={{value}}&f[global_terrorism.incident_date]={{global_terrorism.min_date._value}}+to+{{global_terrorism.max_date._value}}&sorts=global_terrorism.min_date+desc&limit=500&column_limit=50&query_timezone=America%2FLos_Angeles&vis=%7B%22stacking%22%3A%22%22%2C%22show_value_labels%22%3Afalse%2C%22label_density%22%3A25%2C%22legend_position%22%3A%22center%22%2C%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Atrue%2C%22limit_displayed_rows%22%3Afalse%2C%22y_axis_combined%22%3Atrue%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22type%22%3A%22looker_column%22%2C%22series_types%22%3A%7B%7D%2C%22hidden_fields%22%3A%5B%22global_terrorism.min_date%22%2C%22global_terrorism.max_date%22%5D%7D"
+#   }
+    drill_fields: [country_txt]
     type: string
     sql: ${TABLE}.region_txt ;;
   }
@@ -395,6 +400,7 @@ view: global_terrorism {
     map_layer_name: countries
     type: string
     sql: CASE WHEN ${TABLE}.country_txt = 'United States' THEN 'United States of America' ELSE ${TABLE}.country_txt END;;
+    drill_fields: [provstate]
   }
 
   dimension: provstate {
@@ -698,6 +704,7 @@ view: global_terrorism {
 
   dimension: casualties_tiered {
     group_label: "Casualty Characteristics"
+    description: "Groups attacks by casualty count in buckets of 0, 1, 2-4,5-9,10-24,25-49,50-99,100+"
     type: tier
     style: integer
     tiers: [0,1,5,10,25,50,100]
@@ -718,7 +725,7 @@ view: global_terrorism {
     sql: ${TABLE}.nkillus ;;
   }
 
-  measure: total_victim_deaths {
+  measure: total_casualties {
     group_label: "Casualty Characteristics"
     type: sum
     sql: ${TABLE}.nkill ;;
@@ -726,7 +733,7 @@ view: global_terrorism {
     drill_fields:[Details*]
   }
 
-  measure: total_us_deaths {
+  measure: total_us_casualties {
     group_label: "Casualty Characteristics"
     type: sum
     sql: ${TABLE}.nkillus ;;
@@ -916,6 +923,13 @@ view: global_terrorism {
 
 
 #                                                           ***  WEAPON CHARACTERISTICS ***
+  dimension: weaptype1 {
+    type: number
+    sql: ${TABLE}.weaptype1 ;;
+    hidden: yes
+  }
+  #used in join with weapons_facts
+
   dimension: weaptype1_txt {
     group_label: "Weapons"
     label: "Weapon Type"
@@ -987,11 +1001,6 @@ view: global_terrorism {
 #     sql: ${TABLE}.weapsubtype4_txt ;;
 #   }
 #
-#   dimension: weaptype1 {
-#     type: number
-#     sql: ${TABLE}.weaptype1 ;;
-#     hidden: yes
-#   }
 #
 #   dimension: weaptype2 {
 #     type: number
