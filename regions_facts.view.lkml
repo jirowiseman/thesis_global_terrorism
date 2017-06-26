@@ -11,6 +11,7 @@ view: regions_facts {
       FROM global_terrorism
       GROUP BY 1,2
       ;;
+      persist_for: "500 hours"
   }
 
 #   # Define your dimensions and measures here, like this:
