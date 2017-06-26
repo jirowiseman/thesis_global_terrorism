@@ -2,14 +2,13 @@ view: terrorist_facts {
   view_label: "Global Terrorism"
   derived_table: {
     sql: SELECT
-        event_id as event
-        , global_terrorism.gname as group_name
+        global_terrorism.gname as group_name
         , INTEGER(SUM(global_terrorism.nkill)) as alltime_fatalities
         , MAX(global_terrorism.nkill) as largest_attack
-        , MIN(CAST(CONCAT((STRING(global_terrorism.iyear)),"-",(STRING(global_terrorism.imonth)),"-",(STRING(global_terrorism.iday))) as TIMESTAMP)) as first_attack
-        , MAX(CAST(CONCAT((STRING(global_terrorism.iyear)),"-",(STRING(global_terrorism.imonth)),"-",(STRING(global_terrorism.iday))) as TIMESTAMP)) as latest_attack
+        , MIN(CAST(CONCAT((STRING(global_terrorism.iyear)),"-",(STRING(global_terrorism.imonth)),"-",(STRING(global_terrorism.iday))) as DATETIME)) as first_attack
+        , MAX(CAST(CONCAT((STRING(global_terrorism.iyear)),"-",(STRING(global_terrorism.imonth)),"-",(STRING(global_terrorism.iday))) as DATETIME)) as latest_attack
       FROM global_terrorism
-      GROUP BY 1,2
+      GROUP BY 1
       ;;
     persist_for: "500 hours"
   }
@@ -17,7 +16,6 @@ view: terrorist_facts {
   dimension: group_name {
     description: "Official name of Terorist Org."
     type: string
-    primary_key: yes
     hidden: yes
     sql: ${TABLE}.group_name ;;
   }
@@ -55,8 +53,16 @@ view: terrorist_facts {
   dimension: years_btwn_attacks {
     group_label: "Terrorist Group Characteristics"
     type: number
-    sql: (DATEDIFF(${TABLE}.latest_attack,${TABLE}.first_attack))/365 ;;
+    sql: ROUND((DATEDIFF(${TABLE}.latest_attack,${TABLE}.first_attack))/365,0) ;;
   }
+
+  measure: avg_casualties_per_year {
+    group_label: "Terrorist Group Characteristics"
+    type: number
+    sql: MAX(${total_fatalities}/${years_btwn_attacks}) ;;
+    value_format_name: decimal_0
+  }
+}
 
 
 
@@ -88,7 +94,6 @@ view: terrorist_facts {
   #   type: sum
   #   sql: ${lifetime_orders} ;;
   # }
-}
 
 # view: facts_base {
 #   # Or, you could make this view a derived table, like this:
