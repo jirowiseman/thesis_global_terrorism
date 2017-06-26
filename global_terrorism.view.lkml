@@ -200,6 +200,12 @@ view: global_terrorism {
     drill_fields:[Details*]
   }
 
+  measure: median_casualties {
+    type: median
+    sql: 1.0*${TABLE}.nkill ;;
+    value_format: "0.00"
+  }
+
 
 # Not concerned at the moment with small associations with internationality
 #   dimension: int_misc {

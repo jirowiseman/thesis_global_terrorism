@@ -15,6 +15,11 @@ explore: global_terrorism{
     relationship: one_to_one
   }
 
+  join: terrorist_facts {
+    sql_on: ${global_terrorism.gname} = ${terrorist_facts.group_name};;
+    relationship: many_to_one
+  }
+
 #   join: weapons_facts {
 #     sql_on: ${weapons_facts.weapon_id} = ${global_terrorism.weaptype1}
 #     AND ${weapons_facts.year} = ${global_terrorism.iyear};;

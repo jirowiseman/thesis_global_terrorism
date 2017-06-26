@@ -4,10 +4,10 @@ view: regions_facts {
     sql: SELECT
         region as region_id
         ,region_txt as region
-        , INTEGER(COUNT(global_terrorism.nkill)) as alltime_fatalities
+        , INTEGER(SUM(global_terrorism.nkill)) as alltime_fatalities
         , MAX(global_terrorism.nkill) as largest_attack
-        , MIN(CAST(CONCAT(global_terrorism.iyear},"-",global_terrorism.imonth,"-",global_terrorism.iday) as TIMESTAMP) as first_attack
-        , MAX(CAST(CONCAT(global_terrorism.iyear},"-",global_terrorism.imonth,"-",global_terrorism.iday) as TIMESTAMP) as latest_attack
+        , MIN(CAST(CONCAT((STRING(global_terrorism.iyear)),"-",(STRING(global_terrorism.imonth)),"-",(STRING(global_terrorism.iday))) as TIMESTAMP)) as first_attack
+        , MAX(CAST(CONCAT((STRING(global_terrorism.iyear)),"-",(STRING(global_terrorism.imonth)),"-",(STRING(global_terrorism.iday))) as TIMESTAMP)) as latest_attack
       FROM global_terrorism
       GROUP BY 1,2
       ;;
@@ -27,7 +27,7 @@ view: regions_facts {
     label: "Region - Total Casualties"
     group_label: "Location"
     type: number
-    sql: ${TABLE}.total_fatalities ;;
+    sql: ${TABLE}.alltime_fatalities ;;
   }
 
   dimension: region_largest_attack {
@@ -36,14 +36,6 @@ view: regions_facts {
     group_label: "Location"
     type: number
     sql: ${TABLE}.largest_attack ;;
-    value_format: "#,##0"
-  }
-
-  measure: region_alltime_attacks_count {
-    label: "Region - Alltime Attacks"
-    description: "Total attacks recorded in region"
-    group_label: "Location"
-    type: count
     value_format: "#,##0"
   }
 
