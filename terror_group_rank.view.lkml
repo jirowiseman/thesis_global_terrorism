@@ -29,13 +29,4 @@ view: terror_group_rank {
     sql: ${TABLE}.group_rank ;;
   }
 
-  dimension: events {
-    type: number
-    hidden: yes
-    sql: ${TABLE}.events ;;
-  }
-
-  set: detail {
-    fields: [group_name, kills, group_rank, events]
-  }
 }
