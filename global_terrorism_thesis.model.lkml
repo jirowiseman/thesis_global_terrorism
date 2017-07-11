@@ -20,6 +20,11 @@ explore: global_terrorism{
     relationship: one_to_one
   }
 
+  join: terror_group_rank {
+    sql_on: ${global_terrorism.gname} = ${terror_group_rank.group_name} ;;
+    relationship: many_to_many
+  }
+
 #   join: weapons_facts {
 #     sql_on: ${weapons_facts.weapon_id} = ${global_terrorism.weaptype1}
 #     AND ${weapons_facts.year} = ${global_terrorism.iyear};;

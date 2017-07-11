@@ -243,8 +243,15 @@ view: global_terrorism {
     type: time
     datatype: timestamp
     sql: CAST(CONCAT(${iyear},"-",${imonth},"-",${iday}) as TIMESTAMP);;
-    timeframes: [raw,hour,date,day_of_week,day_of_week_index,week,month,year]
+    timeframes: [raw,hour,date,day_of_month,month_name, day_of_week,day_of_week_index,week,month,year]
   }
+
+  dimension: date_formatted {
+    type: string
+    group_label: "Incident Date"
+    sql: CONCAT(${incident_month},"-",${incident_day_of_month},"-",${incident_year}) ;;
+  }
+
 
   dimension: approxdate {
     group_label: "Incident Date"
@@ -374,10 +381,11 @@ view: global_terrorism {
 #     sql: ${TABLE}.corp3 ;;
 #   }
 #
-#   dimension: country {
-#     type: number
-#     sql: ${TABLE}.country ;;
-#   }
+  dimension: country {
+    type: number
+    sql: ${TABLE}.country ;;
+    hidden: yes
+  }
 
 
 #                                                           ***  LOCATION CHARACTERISTICS ***
