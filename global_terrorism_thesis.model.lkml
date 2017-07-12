@@ -12,17 +12,17 @@ include: "*.dashboard"
 explore: global_terrorism{
   join: regions_facts {
     sql_on: ${global_terrorism.region} = ${regions_facts.region_id} ;;
-    relationship: one_to_one
+    relationship: many_to_one
   }
 
   join: terrorist_facts {
     sql_on: ${global_terrorism.gname} = ${terrorist_facts.group_name};;
-    relationship: one_to_one
+    relationship: many_to_one
   }
 
   join: terror_group_rank {
     sql_on: ${global_terrorism.gname} = ${terror_group_rank.group_name} ;;
-    relationship: many_to_many
+    relationship: many_to_one
   }
 
 #   join: weapons_facts {
