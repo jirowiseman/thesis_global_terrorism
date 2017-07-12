@@ -512,6 +512,13 @@ view: global_terrorism {
          END;;
   }
 
+  measure: total_terrorist_count {
+    label: "Terrorist Count"
+    group_label: "Terrorist Group Characteristics"
+    type: sum
+    sql: ${TABLE}.ingroup ;;
+  }
+
 
 #   dimension: gname2 {
 #     type: string
