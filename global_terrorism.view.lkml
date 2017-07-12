@@ -787,6 +787,7 @@ view: global_terrorism {
     group_label: "Casualty Characteristics"
     type: average
     sql: ${TABLE}.nkill;;
+    value_format_name: decimal_1
     drill_fields:[Details*]
   }
 
@@ -794,6 +795,7 @@ view: global_terrorism {
     group_label: "Casualty Characteristics"
     type: median
     sql: ${TABLE}.nkill;;
+    value_format_name: decimal_1
     drill_fields:[Details*]
   }
 
