@@ -489,6 +489,7 @@ view: global_terrorism {
     group_label: "Terrorist Group Characteristics"
     type: string
     sql: ${TABLE}.gname ;;
+    html: <a href="http://www.wikipedia.org/search-redirect.php?family=wikipedia&search={{ value }}&language=en" target="_new"> {{ value }} </a> ;;
   }
 
   dimension: guncertain1 {
