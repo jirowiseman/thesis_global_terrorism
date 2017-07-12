@@ -417,6 +417,15 @@ view: global_terrorism {
     drill_fields: [provstate]
   }
 
+  dimension: muslim_nation {
+    group_label: "Location"
+    type: string
+    sql:
+      CASE
+        WHEN ${country_txt} IN('Afghanistan','Albania','Algeria','Azerbaijan','Bahrain','Bangladesh','Brunei','Burkina Faso','Chad','Comoros','Djibouti','Egypt','Guinea','Indonesia','Iran','Iraq','Jordan','Kazakhstan','Kosovo','Kuwait','Kyrgyzstan','Lebanon','Libya','Malaysia','Maldives','Mali','Mauritania','Mayotte','Morocco','Niger','Nigeria','Oman','Pakistan','Palestine','Qatar','Saudi Arabia','Senegal','Sierra Leone','Somalia','Sudan','Syria','Tajikistan','The Gambia','Tunisia','Turkey','Turkish Republic of Northern Cyprus','Turkmenistan','United Arab Emirates','Uzbekistan','Western Sahara','Yemen') THEN 'Muslim Majority'
+      ELSE 'Non Muslim Majority' END;;
+  }
+
   dimension: provstate {
     label: "Province/State"
     group_label: "Location"
@@ -496,7 +505,10 @@ view: global_terrorism {
     group_label: "Terrorist Group Characteristics"
     description: "Estimated number of members in terrorist organization. Null indicates that the number is unknown"
     type: number
-    sql: NULLIF(${TABLE}.ingroup,-9) ;;
+    sql: CASE
+          WHEN ${TABLE}.ingroup = -9 THEN 0
+          ELSE ${TABLE}.ingroup
+         END;;
   }
 
 
