@@ -1,4 +1,4 @@
-# Thesis Writeup
+# Global Terrorism Database 1970 - 2015
 
 I got the data in global_terrorism_thesis from Kaggle.com but the data is originally from the Global Terrorism Database group from the University of Maryland's Global Terrorism Database group. You can read about them here: http://www.start.umd.edu/gtd/about/
 
