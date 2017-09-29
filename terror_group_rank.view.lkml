@@ -5,6 +5,7 @@ view: terror_group_rank {
         ,SUM(nkill) as kills
         ,RANK() OVER (
           ORDER BY kills DESC) as group_rank
+        ,MAX(ingroup) as group_size
       FROM global_terrorism
       group by 1 ;;
   persist_for: "500 hours"
@@ -27,6 +28,19 @@ view: terror_group_rank {
     group_label: "Terrorist Group Characteristics"
     type: number
     sql: ${TABLE}.group_rank ;;
+  }
+
+  dimension: group_size {
+    group_label: "Terrorist Group Characteristics"
+    type: number
+    sql: ${TABLE}.group_size ;;
+  }
+
+  measure: active_terrorist_count{
+    group_label: "Terrorist Group Characteristics"
+    type: sum
+    sql: ${TABLE}.group_size ;;
+    drill_fields: [group_name,group_rank,group_size]
   }
 
 }

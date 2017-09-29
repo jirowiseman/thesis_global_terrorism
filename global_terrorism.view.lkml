@@ -184,7 +184,14 @@ view: global_terrorism {
     group_label: "Attack Characteristics"
     type: string
     sql: ${TABLE}.summary ;;
+    html:
+    {% assign words = {{value}} | split: '>' %}
+    <ul>
+    {% for word in words %}
+    <li> {{ word }} </li>
+    {% endfor %} ;;
   }
+
 
   dimension: suicide {
     group_label: "Attack Characteristics"
@@ -244,6 +251,7 @@ view: global_terrorism {
     datatype: timestamp
     sql: CAST(CONCAT(${iyear},"-",${imonth},"-",${iday}) as TIMESTAMP);;
     timeframes: [raw,hour,date,day_of_month,month_name, day_of_week,day_of_week_index,week,month,year]
+    drill_fields: [incident_hour]
   }
 
   dimension: date_formatted {
@@ -403,7 +411,7 @@ view: global_terrorism {
 #       label: "Explore by name and filters"
 #        url: "https://dcl.dev.looker.com/explore/global_terrorism_thesis/global_terrorism?fields=global_terrorism.min_date,global_terrorism.max_date,global_terrorism.region_txt,global_terrorism.incident_count&f[global_terrorism.region_txt]={{value}}&f[global_terrorism.incident_date]={{global_terrorism.min_date._value}}+to+{{global_terrorism.max_date._value}}&sorts=global_terrorism.min_date+desc&limit=500&column_limit=50&query_timezone=America%2FLos_Angeles&vis=%7B%22stacking%22%3A%22%22%2C%22show_value_labels%22%3Afalse%2C%22label_density%22%3A25%2C%22legend_position%22%3A%22center%22%2C%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Atrue%2C%22limit_displayed_rows%22%3Afalse%2C%22y_axis_combined%22%3Atrue%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22type%22%3A%22looker_column%22%2C%22series_types%22%3A%7B%7D%2C%22hidden_fields%22%3A%5B%22global_terrorism.min_date%22%2C%22global_terrorism.max_date%22%5D%7D"
 #   }
-    drill_fields: [country_txt]
+    drill_fields: [country_txt, provstate,city]
     type: string
     sql: ${TABLE}.region_txt ;;
   }
@@ -501,6 +509,8 @@ view: global_terrorism {
       ELSE 'No';;
   }
 
+
+## ingroup is a single number across time for each terrorist group rather than a yearly count that changes over time.
   dimension: ingroup {
     label: "Terrorist Group Size"
     group_label: "Terrorist Group Characteristics"
@@ -512,12 +522,13 @@ view: global_terrorism {
          END;;
   }
 
-  measure: total_terrorist_count {
-    label: "Terrorist Count"
-    group_label: "Terrorist Group Characteristics"
-    type: sum
-    sql: ${TABLE}.ingroup ;;
-  }
+#   measure: total_terrorist_count {
+#     label: "Terrorist Count"
+#     group_label: "Terrorist Group Characteristics"
+#     type: max
+#     sql: ${TABLE}.ingroup ;;
+#     drill_fields: [Details*]
+#   }
 
 
 #   dimension: gname2 {
@@ -638,7 +649,10 @@ view: global_terrorism {
   dimension: ransomnote {
     group_label: "Kidnapping Info"
     type: string
-    sql: ${TABLE}.ransomnote ;;
+    sql: COALESCE(${TABLE}.ransomnote,'No Data Available') ;;
+    html: {% if value == 'No Data Available' %}
+    <p style="color: red; background-color: lightblue; font-size:100%; text-align:center">{{ rendered_value }}</p>
+    {%endif%};;
   }
 
   dimension: ransompaid {
@@ -646,7 +660,6 @@ view: global_terrorism {
     type: number
     value_format_name: id
     sql: ${TABLE}.ransompaid ;;
-    value_format_name: usd
   }
 
   dimension: ransompaidus {
