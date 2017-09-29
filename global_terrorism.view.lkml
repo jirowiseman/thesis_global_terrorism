@@ -20,6 +20,7 @@ view: global_terrorism {
   dimension: attacktype1_txt {
     label: "Attack Type"
     group_label: "Attack Characteristics"
+    label: "Attack Type1"
     type: string
     sql: ${TABLE}.attacktype1_txt ;;
   }
@@ -33,6 +34,7 @@ view: global_terrorism {
 
   dimension: attacktype2_txt {
     group_label: "Attack Characteristics"
+    label: "Attack Type2"
     type: string
     sql: ${TABLE}.attacktype2_txt ;;
     hidden: yes
@@ -47,6 +49,7 @@ view: global_terrorism {
 
   dimension: attacktype3_txt {
     group_label: "Attack Characteristics"
+    label: "Attack Type3"
     type: string
     sql: ${TABLE}.attacktype3_txt ;;
     hidden: yes
@@ -1093,6 +1096,8 @@ view: global_terrorism {
   dimension: scite2 {
     label: "Secondary Info Source"
     group_label: "x-Meta Info"
+  dimension: weaptype1_txt {
+    label: "Weapon Type"
     type: string
     sql: ${TABLE}.scite2 ;;
   }
