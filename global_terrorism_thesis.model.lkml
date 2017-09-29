@@ -1,8 +1,4 @@
-
-# NOTE: please see https://looker.com/docs/r/sql/bigquery?version=4.12
-# NOTE: for BigQuery specific considerations
-
-connection: "thesis_jiro_global_terrorism"
+connection: "global_terrorism"
 label: "Global Terrorism"
 
 # include all the views

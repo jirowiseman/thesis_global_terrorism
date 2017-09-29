@@ -1792,10 +1792,6 @@ view: global_terrorism {
   dimension: scite2 {
     label: "Secondary Info Source"
     group_label: "x-Meta Info"
-  }
-
-  dimension: weaptype1_txt {
-    label: "Weapon Type"
     type: string
     sql: ${TABLE}.scite2 ;;
   }
