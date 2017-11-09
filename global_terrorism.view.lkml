@@ -58,7 +58,7 @@ view: global_terrorism {
     description: "The violent act must be aimed at attaining a political, economic, religious, or social goal. This criterion is not satisfied in those cases where the perpetrator(s) acted out of a pure profit motive or from an idiosyncratic personal motive unconnected with broader societal change"
     type: string
     sql: CASE WHEN ${TABLE}.crit1 = 1 THEN 'Yes'
-      ELSE 'No';;
+      ELSE 'No'END;;
   }
 
   dimension: crit2 {
@@ -67,7 +67,7 @@ view: global_terrorism {
     description: "To satisfy this criterion there must be evidence of an intention to coerce, intimidate, or convey some other message to a larger audience (or audiences) than the immediate victims. Such evidence can include (but is not limited to) the following: pre‐ or post‐attack statements by the perpetrator(s), past behavior by the perpetrators, or the particular nature of the target/victim, weapon, or attack type."
     type: string
     sql: CASE WHEN ${TABLE}.crit2 = 1 THEN 'Yes'
-      ELSE 'No';;
+      ELSE 'No' END;;
   }
 
   dimension: crit3 {
@@ -76,7 +76,7 @@ view: global_terrorism {
     description: "The action is outside the context of legitimate warfare activities, insofar as it targets non‐combatants (i.e. the act must be outside the parameters permitted by international humanitarian law as reflected in the Additional Protocol to the Geneva Conventions of 12 August 1949 and elsewhere)."
     type: string
     sql: CASE WHEN ${TABLE}.crit3 = 1 THEN 'Yes'
-      ELSE 'No';;
+      ELSE 'No' END;;
   }
 
   dimension: multiple {
@@ -506,7 +506,7 @@ view: global_terrorism {
     description: "This variable indicates whether or not the information reported by sources about the Perpetrator Group Name(s) is based on speculation or dubious claims of responsibility."
     type: string
     sql: CASE WHEN ${TABLE}.guncertain1 = 1 THEN 'Yes'
-      ELSE 'No';;
+      ELSE 'No'END;;
   }
 
 
@@ -686,12 +686,12 @@ view: global_terrorism {
     label: "Hostage Outcome"
     group_label: "Kidnapping Info"
     type: number
-    sql: CASE WHEN ${TABLE}.hostkidoutcome = 1  'Attempted Rescue'
-              WHEN ${TABLE}.hostkidoutcome = 2  'Hostage(s) released'
-              WHEN ${TABLE}.hostkidoutcome = 3  'Hostage(s) escaped'
-              WHEN ${TABLE}.hostkidoutcome = 4  'Hostage(s) killed by Captor'
-              WHEN ${TABLE}.hostkidoutcome = 5  'Successful Rescue'
-              WHEN ${TABLE}.hostkidoutcome = 6  'Combination'
+    sql: CASE WHEN ${TABLE}.hostkidoutcome = 1  THEN 'Attempted Rescue'
+              WHEN ${TABLE}.hostkidoutcome = 2  THEN 'Hostage(s) released'
+              WHEN ${TABLE}.hostkidoutcome = 3  THEN 'Hostage(s) escaped'
+              WHEN ${TABLE}.hostkidoutcome = 4  THEN 'Hostage(s) killed by Captor'
+              WHEN ${TABLE}.hostkidoutcome = 5  THEN 'Successful Rescue'
+              WHEN ${TABLE}.hostkidoutcome = 6  THEN 'Combination'
               ELSE 'Unknown' END ;;
   }
 
