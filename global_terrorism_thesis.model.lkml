@@ -1,4 +1,4 @@
-connection: "thesis_jiro_global_terrorism"
+connection: "global_terrorism"
 label: "Global Terrorism"
 
 # include all the views
