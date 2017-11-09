@@ -1678,12 +1678,12 @@ view: global_terrorism {
   }
   #used in join with weapons_facts
 
-  dimension: weaptype1_txt {
-    group_label: "Weapons"
-    label: "Weapon Type"
-    type: string
-    sql: ${TABLE}.weaptype1_txt ;;
-  }
+  # dimension: weaptype1_txt {
+  #   group_label: "Weapons"
+  #   label: "Weapon Type"
+  #   type: string
+  #   sql: ${TABLE}.weaptype1_txt ;;
+  # }
 
   dimension: weapdetail {
     group_label: "Weapons"
@@ -1792,7 +1792,8 @@ view: global_terrorism {
   dimension: scite2 {
     label: "Secondary Info Source"
     group_label: "x-Meta Info"
-    
+  }
+
   dimension: weaptype1_txt {
     label: "Weapon Type"
     type: string
