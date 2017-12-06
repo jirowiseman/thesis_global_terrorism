@@ -715,7 +715,6 @@ view: global_terrorism {
   dimension: attacktype1_txt {
     label: "Attack Type"
     group_label: "Attack Characteristics"
-    label: "Attack Type1"
     type: string
     sql: ${TABLE}.attacktype1_txt ;;
   }
@@ -1709,7 +1708,8 @@ view: global_terrorism {
   dimension: automatic_used {
     group_label: "Weapons"
     type: yesno
-    sql: ${weapdetail} LIKE '% automatic%' ;;
+    sql: ${attacktype1_txt} LIKE '%Armed Assault%' AND ${weapdetail} LIKE '% automatic%' ;;
+    drill_fields: [Details*]
 
   }
 
