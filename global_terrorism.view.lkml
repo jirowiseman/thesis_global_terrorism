@@ -715,7 +715,6 @@ view: global_terrorism {
   dimension: attacktype1_txt {
     label: "Attack Type"
     group_label: "Attack Characteristics"
-    label: "Attack Type1"
     type: string
     sql: ${TABLE}.attacktype1_txt ;;
   }
