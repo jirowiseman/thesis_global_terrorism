@@ -1,4 +1,4 @@
-view: test_pdt {
+view: test_pdt2 {
   view_label: "Global Terrorism"
   derived_table: {
     sql: SELECT

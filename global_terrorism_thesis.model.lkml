@@ -32,3 +32,5 @@ explore: global_terrorism{
 #     relationship: many_to_one
 #   }
 }
+
+explore: test_pdt2 {}
